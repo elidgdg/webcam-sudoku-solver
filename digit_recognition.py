@@ -1,5 +1,6 @@
 from torchvision import datasets
 from torchvision.transforms import ToTensor
+from torch.utils.data import DataLoader
 
 # Download training data
 training_data = datasets.MNIST(
