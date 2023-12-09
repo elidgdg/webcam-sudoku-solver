@@ -86,3 +86,4 @@ if __name__ == '__main__':
     for epoch in range(1, 11):
         train(epoch)
         test()
+    torch.save(model.state_dict(), 'model.pt') # Save the model parameters to a file
