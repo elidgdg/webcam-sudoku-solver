@@ -59,6 +59,7 @@ loss_fn = nn.CrossEntropyLoss() # Create the loss function
 # Define the training function
 def train(epoch):
     model.train() # Set the model to training mode
+    
     for batch_idx, (data, target) in enumerate(loaders['train']): # Iterate over the training data
         data, target = data.to(device), target.to(device) # Send the data to the GPU if available
         optimizer.zero_grad() # Zero the gradients
@@ -72,7 +73,6 @@ def train(epoch):
 # Define the test function
 def test():
     model.eval() # Set the model to evaluation mode
-
     test_loss = 0 
     correct = 0
 
