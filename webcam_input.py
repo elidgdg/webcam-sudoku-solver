@@ -1,21 +1,16 @@
-import cv2
+import cv2 # Import the OpenCV library
 
 # Open the webcam
 cap = cv2.VideoCapture(0)
 
 while True:
-    # Read a frame from the webcam
-    ret, frame = cap.read()
+    ret, frame = cap.read() # Read a frame from the webcam
 
-    # Display the frame
-    cv2.imshow('Webcam', frame)
+    cv2.imshow('Webcam', frame) # Display the frame
 
     # Break the loop if 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release the webcam
-cap.release()
-
-# Close all windows
-cv2.destroyAllWindows()
+cap.release() # Release the webcam
+cv2.destroyAllWindows() # Close all windows
