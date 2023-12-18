@@ -1,4 +1,5 @@
 import cv2 # Import the OpenCV library
+import numpy as np # Import Numpy library
 
 img_path = 'sudoku_test.jpg'
 img_height = 450
@@ -17,6 +18,20 @@ img_thresh = cv2.adaptiveThreshold(img_blur, 255, 1, 1, 11, 2)
 img_contours = img.copy()
 contours, hierarchy = cv2.findContours(img_thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 3)
+
+# Find the biggest contour
+biggest_contour = np.array([])
+max_area = 0
+for contour in contours:
+    area = cv2.contourArea(contour)
+    if area > 50:
+        peri = cv2.arcLength(contour, True)
+        approx = cv2.approxPolyDP(contour, 0.02 * peri, True)
+        if area > max_area and len(approx) == 4:
+            biggest_contour = approx
+            max_area = area
+
+
 
 # Display the image
 cv2.imshow('Image', img_thresh)
