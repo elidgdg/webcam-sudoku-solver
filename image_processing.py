@@ -1,5 +1,9 @@
 import cv2 # Import the OpenCV library
 import numpy as np # Import Numpy library
+import torch # Import PyTorch library
+
+# load model.pt
+model = torch.load('model.pt')
 
 img_path = 'sudoku_test.jpg'
 img_height = 450
@@ -31,11 +35,45 @@ for contour in contours:
             biggest_contour = approx
             max_area = area
 
+# Reorder the points in the contour to go clockwise
+def reorder(points):
+    points = points.reshape((4, 2))
+    points_new = np.zeros((4, 1, 2), dtype=np.int32)
+    add = points.sum(1)
+    points_new[0] = points[np.argmin(add)]
+    points_new[3] = points[np.argmax(add)]
+    diff = np.diff(points, axis=1)
+    points_new[1] = points[np.argmin(diff)]
+    points_new[2] = points[np.argmax(diff)]
+    return points_new
 
+# Reorder the points in the biggest contour
+if biggest_contour.size != 0:
+    biggest_contour = reorder(biggest_contour)
+    cv2.drawContours(img_contours, biggest_contour, -1, (0, 0, 255), 10)
+    pts1 = np.float32(biggest_contour)
+    pts2 = np.float32([[0, 0], [img_width, 0], [0, img_height], [img_width, img_height]])
+    matrix = cv2.getPerspectiveTransform(pts1, pts2)
+    img_warped = cv2.warpPerspective(img, matrix, (img_width, img_height))
+
+# Create a Sudoku grid
+def split_grid(img):
+    rows = np.vsplit(img, 9)
+    squares = []
+    for r in rows:
+        cols = np.hsplit(r, 9)
+        for box in cols:
+            squares.append(box)
+    return squares
+
+squares = split_grid(img_warped)
+
+# Predict the digits
 
 # Display the image
 cv2.imshow('Image', img_thresh)
 cv2.imshow('Contours', img_contours)
+cv2.imshow('Warped Image', img_warped)
 
 # Wait for a key press to exit
 cv2.waitKey(0)
