@@ -92,6 +92,7 @@ def predict_digits(squares):
     return result
 
 
+
 result = predict_digits(squares)
 print(result)
 
