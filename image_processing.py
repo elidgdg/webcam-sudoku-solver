@@ -1,9 +1,12 @@
 import cv2 # Import the OpenCV library
 import numpy as np # Import Numpy library
 import torch # Import PyTorch library
+import model # Import the model.py file
 
 # load model.pt
-model = torch.load('model.pt')
+model = model.Net()
+model.load_state_dict(torch.load('model.pt'))
+model.eval()
 
 img_path = 'sudoku_test.jpg'
 img_height = 450
@@ -47,7 +50,7 @@ def reorder(points):
     points_new[2] = points[np.argmax(diff)]
     return points_new
 
-# Reorder the points in the biggest contour
+# Warp the image
 if biggest_contour.size != 0:
     biggest_contour = reorder(biggest_contour)
     cv2.drawContours(img_contours, biggest_contour, -1, (0, 0, 255), 10)
@@ -55,6 +58,7 @@ if biggest_contour.size != 0:
     pts2 = np.float32([[0, 0], [img_width, 0], [0, img_height], [img_width, img_height]])
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
     img_warped = cv2.warpPerspective(img, matrix, (img_width, img_height))
+    img_warped = cv2.cvtColor(img_warped, cv2.COLOR_BGR2GRAY)
 
 # Create a Sudoku grid
 def split_grid(img):
@@ -68,7 +72,24 @@ def split_grid(img):
 
 squares = split_grid(img_warped)
 
+
 # Predict the digits
+def predict_digits(squares):
+    result = []
+    for image in squares:
+        img = image[4:img_width-4, 4:img_height-4]
+        img = cv2.resize(img, (28, 28))
+        img = cv2.bitwise_not(img)
+        img = img / 255.0
+        img = torch.Tensor(img).view(-1, 1, 28, 28)
+        outputs = model(img)
+        _, predicted = torch.max(outputs.data, 1)
+        result.append(predicted.item())
+    return result
+
+
+result = predict_digits(squares)
+print(result)
 
 # Display the image
 cv2.imshow('Image', img_thresh)
