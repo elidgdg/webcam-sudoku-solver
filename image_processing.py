@@ -84,7 +84,11 @@ def predict_digits(squares):
         img = torch.Tensor(img).view(-1, 1, 28, 28)
         outputs = model(img)
         _, predicted = torch.max(outputs.data, 1)
-        result.append(predicted.item())
+        probability = torch.max(outputs.data, 1)[0].item()
+        if probability > 0.7:
+            result.append(predicted.item())
+        else:
+            result.append(0)
     return result
 
 
