@@ -1,7 +1,8 @@
 import image_processing
+import solve
 import cv2
 
-img_path = 'sudoku_test.jpg'
+img_path = 'sudoku_test2.jpg'
 
 # NOTE : this doesnt work well because thresholds image not good before prediction.
 
@@ -21,6 +22,17 @@ img_warped = image_processing.warp(img_gray, biggest_contour)
 squares = image_processing.split_grid(img_warped)
 predicted = image_processing.predict_digits(squares)
 print(predicted)
+
+#Split into 9x9 grid
+board = []
+for i in range(9):
+    board.append(predicted[i*9 : (i+1)*9])
+
+# Solve the sudoku
+solved_board = board.copy()
+solve.solve(solved_board)
+print(solved_board)
+
 
 cv2.imshow('Image', img_processed)
 cv2.imshow('Contours', img_warped) 
