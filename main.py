@@ -15,9 +15,9 @@ img_resize = cv2.resize(img, (450, 450))
 
 #Preprocess the image
 img_gray = cv2.cvtColor(img_resize, cv2.COLOR_BGR2GRAY)
-img_blur = cv2.GaussianBlur(img_gray, (5, 5), 1)
+# img_blur = cv2.GaussianBlur(img_gray, (5, 5), 1)
 
-img_warped = image_processing.warp(img_blur, biggest_contour)
+img_warped = image_processing.warp(img_gray, biggest_contour)
 squares = image_processing.split_grid(img_warped)
 predicted = image_processing.predict_digits(squares)
 print(predicted)
