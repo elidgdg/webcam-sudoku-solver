@@ -22,22 +22,26 @@ def process_image(img_path, img_width=450, img_height=450):
 
     return img_thresh
 
-# Find the contours
-img_contours = img.copy()
-contours, hierarchy = cv2.findContours(img_thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 3)
+def contours(img):   
+    # Find the contours
+    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # img_contours = img.copy()
+    # cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 3)
+    return contours
 
-# Find the biggest contour
-biggest_contour = np.array([])
-max_area = 0
-for contour in contours:
-    area = cv2.contourArea(contour)
-    if area > 50:
-        peri = cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, 0.02 * peri, True)
-        if area > max_area and len(approx) == 4:
-            biggest_contour = approx
-            max_area = area
+def biggest_contour(contours): 
+    # Find the biggest contour
+    biggest_contour = np.array([])
+    max_area = 0
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area > 50:
+            peri = cv2.arcLength(contour, True)
+            approx = cv2.approxPolyDP(contour, 0.02 * peri, True)
+            if area > max_area and len(approx) == 4:
+                biggest_contour = approx
+                max_area = area
+    return biggest_contour
 
 # Reorder the points in the contour to go clockwise
 def reorder(points):
@@ -52,14 +56,21 @@ def reorder(points):
     return points_new
 
 # Warp the image
-if biggest_contour.size != 0:
-    biggest_contour = reorder(biggest_contour)
-    cv2.drawContours(img_contours, biggest_contour, -1, (0, 0, 255), 10)
+def warp(img, biggest_contour, img_width=450, img_height=450):
     pts1 = np.float32(biggest_contour)
     pts2 = np.float32([[0, 0], [img_width, 0], [0, img_height], [img_width, img_height]])
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
     img_warped = cv2.warpPerspective(img, matrix, (img_width, img_height))
-    img_warped = cv2.cvtColor(img_warped, cv2.COLOR_BGR2GRAY)
+    return img_warped
+
+# if biggest_contour.size != 0:
+#     biggest_contour = reorder(biggest_contour)
+#     cv2.drawContours(img_contours, biggest_contour, -1, (0, 0, 255), 10)
+#     pts1 = np.float32(biggest_contour)
+#     pts2 = np.float32([[0, 0], [img_width, 0], [0, img_height], [img_width, img_height]])
+#     matrix = cv2.getPerspectiveTransform(pts1, pts2)
+#     img_warped = cv2.warpPerspective(img, matrix, (img_width, img_height))
+#     img_warped_gray = cv2.cvtColor(img_warped, cv2.COLOR_BGR2GRAY)
 
 # Create a Sudoku grid
 def split_grid(img):
@@ -71,11 +82,10 @@ def split_grid(img):
             squares.append(box)
     return squares
 
-squares = split_grid(img_warped)
-
+# squares = split_grid(img_warped)
 
 # Predict the digits
-def predict_digits(squares):
+def predict_digits(squares, img_width=450, img_height=450):
     result = []
     for image in squares:
         img = image[4:img_width-4, 4:img_height-4]
@@ -93,14 +103,14 @@ def predict_digits(squares):
     return result
 
 
-result = predict_digits(squares)
-print(result)
+# result = predict_digits(squares)
+# print(result)
 
-# Display the image
-cv2.imshow('Image', img_thresh)
-cv2.imshow('Contours', img_contours)
-cv2.imshow('Warped Image', img_warped)
+# # Display the image
+# cv2.imshow('Image', img_thresh)
+# cv2.imshow('Contours', img_contours)
+# cv2.imshow('Warped Image', img_warped)
 
-# Wait for a key press to exit
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# # Wait for a key press to exit
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
