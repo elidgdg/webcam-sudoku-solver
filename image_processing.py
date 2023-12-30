@@ -9,17 +9,18 @@ model.load_state_dict(torch.load('model.pt'))
 model.eval()
 
 img_path = 'sudoku_test.jpg'
-img_height = 450
-img_width = 450
 
-# Read the image
-img = cv2.imread(img_path)
-img = cv2.resize(img, (img_width, img_height))
+def process_image(img_path, img_width=450, img_height=450):
+    # Read the image
+    img = cv2.imread(img_path)
+    img_resize = cv2.resize(img, (img_width, img_height))
 
-#Preprocess the image
-img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-img_blur = cv2.GaussianBlur(img_gray, (5, 5), 1)
-img_thresh = cv2.adaptiveThreshold(img_blur, 255, 1, 1, 11, 2)
+    #Preprocess the image
+    img_gray = cv2.cvtColor(img_resize, cv2.COLOR_BGR2GRAY)
+    img_blur = cv2.GaussianBlur(img_gray, (5, 5), 1)
+    img_thresh = cv2.adaptiveThreshold(img_blur, 255, 1, 1, 11, 2)
+
+    return img_thresh
 
 # Find the contours
 img_contours = img.copy()
