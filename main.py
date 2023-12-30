@@ -2,7 +2,7 @@ import image_processing
 import solve
 import cv2
 
-img_path = 'sudoku_test2.jpg'
+img_path = 'sudoku_test.jpg'
 
 # NOTE : this doesnt work well because thresholds image not good before prediction.
 
@@ -33,6 +33,8 @@ solved_board = board.copy()
 solve.solve(solved_board)
 print(solved_board)
 
+# display 71st box
+cv2.imshow('71st box', squares[80])
 
 cv2.imshow('Image', img_processed)
 cv2.imshow('Contours', img_warped) 
