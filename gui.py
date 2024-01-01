@@ -26,7 +26,6 @@ def get_board_values(entries):
             else:
                 row.append(int(entries[i][j].get()))
         board.append(row)
-    print(board)
     return board
 
 def update_entries(entries, board):
