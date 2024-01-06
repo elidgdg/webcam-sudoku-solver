@@ -8,10 +8,12 @@ class GUI():
     def __init__(self, root):
         self.root = root
 
+        # Create the 9x9 grid of entry boxes
         self.entries = [[tk.Entry(root, width=3, justify="center") for i in range(9)] for j in range(9)]
         for i in range(9):
             for j in range(9):
 
+                # Add padding to the entry boxes to make them look like a sudoku grid
                 padx = (0, 0)
                 pady = (0, 0)
                 if i % 3 == 0 and i != 0:
@@ -19,6 +21,7 @@ class GUI():
                 if j % 3 == 0 and j != 0:
                     padx = (5, 0)
 
+                # Add the entry box to the grid
                 self.entries[i][j].grid(row=i, column=j, padx=padx, pady=pady, ipadx=5, ipady=5)
 
         self.solve_button = self.create_solve_button()
