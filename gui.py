@@ -11,6 +11,9 @@ class GUI():
         # Create frame for the sudoku grid
         self.grid_frame = tk.Frame(root)
         self.grid_frame.grid(row=0, column=0, padx=10, pady=10)
+        # create frame for buttons
+        self.button_frame = tk.Frame(root)
+        self.button_frame.grid(row=0, column=1, padx=10, pady=10)
 
         # Create the 9x9 grid of entry boxes
         self.entries = [[tk.Entry(self.grid_frame, width=3, justify="center") for i in range(9)] for j in range(9)]
@@ -54,6 +57,6 @@ class GUI():
         self.update_entries(board)
     
     def create_solve_button(self):
-        solve_button = tk.Button(self.root, text="Solve" , command=lambda: self.gui_solve())
+        solve_button = tk.Button(self.button_frame, text="Solve" , command=lambda: self.gui_solve())
         solve_button.grid(row=10, column=0, columnspan=9, padx=10, pady=10)
         return solve_button
