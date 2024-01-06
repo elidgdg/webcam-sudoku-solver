@@ -8,6 +8,13 @@ root.title("Sudoku Solver")
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
 
+class GUI():
+    def __init__(self, root):
+        self.root = root
+        self.entries = [[tk.Entry(root, width=2, justify="center") for i in range(9)] for j in range(9)]
+        self.create_entries()
+        self.create_solve_button()
+
 # Create the grid of entries
 entries = [[tk.Entry(root, width=2, justify="center") for i in range(9)] for j in range(9)]
 
