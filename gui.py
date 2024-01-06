@@ -8,8 +8,12 @@ class GUI():
     def __init__(self, root):
         self.root = root
 
+        # Create frame for the sudoku grid
+        self.grid_frame = tk.Frame(root)
+        self.grid_frame.grid(row=0, column=0, padx=10, pady=10)
+
         # Create the 9x9 grid of entry boxes
-        self.entries = [[tk.Entry(root, width=3, justify="center") for i in range(9)] for j in range(9)]
+        self.entries = [[tk.Entry(self.grid_frame, width=3, justify="center") for i in range(9)] for j in range(9)]
         for i in range(9):
             for j in range(9):
 
