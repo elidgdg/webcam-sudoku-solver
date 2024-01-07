@@ -31,8 +31,40 @@ class GUI():
                 # Add the entry box to the grid
                 self.entries[i][j].grid(row=i, column=j, padx=padx, pady=pady, ipadx=5, ipady=5)
 
-        self.solve_button = self.create_solve_button()
-    
+        self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
+        self.start_solving_btn.grid(row=0, column=0, columnspan=9, padx=10, pady=10)
+        self.camera_btn = tk.Button(self.button_frame, text="Camera" command=self.open_camera)
+        self.camera_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
+        
+    def start_solving(self):
+        self.start_solving_btn.destroy()
+        self.camera_btn.destroy()
+
+        # Make any non-empty entries read-only
+        for i in range(9):
+            for j in range(9):
+                if self.entries[i][j].get() != "":
+                    self.entries[i][j].config(state="readonly")
+
+        self.see_solution_btn = tk.Button(self.button_frame, text="See Solution", command=self.see_solution)
+        self.see_solution_btn.grid(row=0, column=0, columnspan=9, padx=10, pady=10)
+        self.reset_btn = tk.Button(self.button_frame, text="Reset", command=self.reset)
+        self.reset_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
+        self.new_puzzle_btn = tk.Button(self.button_frame, text="New Puzzle", command=self.new_puzzle)
+        self.new_puzzle_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
+
+    def see_solution(self):
+        board = self.get_board_values()
+        solve.solve(board)
+        self.update_entries(board)
+    def reset(self):
+        pass
+    def new_puzzle(self):
+        pass
+    def open_camera(self):
+        pass
+
+
     def get_board_values(self):
         board = []
         for i in range(9):
@@ -50,11 +82,6 @@ class GUI():
             for j in range(9):
                 self.entries[i][j].delete(0, tk.END)
                 self.entries[i][j].insert(0, board[i][j])
-
-    def gui_solve(self):
-        board = self.get_board_values()
-        solve.solve(board)
-        self.update_entries(board)
     
     def create_solve_button(self):
         solve_button = tk.Button(self.button_frame, text="Solve" , command=lambda: self.gui_solve())
