@@ -70,9 +70,11 @@ class GUI():
 
     def get_board_values(self):
         board = []
+        # get values from entry boxes
         for i in range(9):
             row = []
             for j in range(9):
+                # if entry box is empty, set value to 0
                 if self.entries[i][j].get() == "":
                     row.append(0)
                 else:
