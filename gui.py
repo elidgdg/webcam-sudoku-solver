@@ -33,7 +33,7 @@ class GUI():
 
         self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
         self.start_solving_btn.grid(row=0, column=0, columnspan=9, padx=10, pady=10)
-        self.camera_btn = tk.Button(self.button_frame, text="Camera" command=self.open_camera)
+        self.camera_btn = tk.Button(self.button_frame, text="Camera", command=self.open_camera)
         self.camera_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
         
     def start_solving(self):
