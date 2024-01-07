@@ -1,5 +1,5 @@
 import tkinter as tk
-import solve
+import sudoku_algorithms
 
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -58,8 +58,12 @@ class GUI():
 
     def see_solution(self):
         board = self.get_board_values()
-        solve.solve(board)
+        if not sudoku_algorithms.is_valid_board(board):
+            print("Invalid board")
+            return
+        sudoku_algorithms.solve(board)
         self.update_entries(board)
+    
     def reset(self):
         pass
     def new_puzzle(self):
@@ -83,10 +87,11 @@ class GUI():
         return board
     
     def update_entries(self, board):
+        # update entry boxes with values from board
         for i in range(9):
             for j in range(9):
-                self.entries[i][j].delete(0, tk.END)
-                self.entries[i][j].insert(0, board[i][j])
+                self.entries[i][j].delete(0, tk.END) # delete current value
+                self.entries[i][j].insert(0, board[i][j]) # insert new value
     
     def create_solve_button(self):
         solve_button = tk.Button(self.button_frame, text="Solve" , command=lambda: self.gui_solve())

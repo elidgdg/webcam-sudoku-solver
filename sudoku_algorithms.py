@@ -7,7 +7,7 @@ def find_empty_cell(board):
     return None
 
 # check if placing num at (row, col) is valid
-def valid(board, row, col, num):
+def cell_valid(board, row, col, num):
     # check row and column
     for i in range(9):
         if board[row][i] == num:
@@ -34,7 +34,7 @@ def solve(board):
 
     # try numbers from 1 to 9 in empty cell
     for num in range(1,10):
-        if valid(board, row, col, num):
+        if cell_valid(board, row, col, num):
             # if valid, place num in empty cell
             board[row][col] = num
 
@@ -47,3 +47,15 @@ def solve(board):
 
     # if no digit from 1 to 9 leads to a solution, return False
     return False
+
+# check if board is valid
+def is_valid_board(board):
+    for i in range(9):
+        for j in range(9):
+            num = board[i][j]
+            if num != 0:
+                board[i][j] = 0 # temporarily set cell to 0
+                if not cell_valid(board, i, j, num):
+                    return False
+                board[i][j] = num # reset cell to original value
+    return True

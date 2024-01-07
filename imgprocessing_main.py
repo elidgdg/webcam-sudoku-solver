@@ -1,5 +1,5 @@
 import image_processing
-import solve
+import sudoku_algorithms
 import cv2
 
 img_path = 'sudoku_test.jpg'
@@ -30,7 +30,7 @@ for i in range(9):
 
 # Solve the sudoku
 solved_board = board.copy()
-solve.solve(solved_board)
+sudoku_algorithms.solve(solved_board)
 print(solved_board)
 
 # display 71st box
