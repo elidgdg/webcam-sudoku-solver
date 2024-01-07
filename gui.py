@@ -31,12 +31,14 @@ class GUI():
                 # Add the entry box to the grid
                 self.entries[i][j].grid(row=i, column=j, padx=padx, pady=pady, ipadx=5, ipady=5)
 
+        # Create initial buttons
         self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
         self.start_solving_btn.grid(row=0, column=0, columnspan=9, padx=10, pady=10)
         self.camera_btn = tk.Button(self.button_frame, text="Camera", command=self.open_camera)
         self.camera_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
         
     def start_solving(self):
+        # Destroy initial buttons
         self.start_solving_btn.destroy()
         self.camera_btn.destroy()
 
@@ -46,6 +48,7 @@ class GUI():
                 if self.entries[i][j].get() != "":
                     self.entries[i][j].config(state="readonly")
 
+        # Create solve, reset, and new puzzle buttons
         self.see_solution_btn = tk.Button(self.button_frame, text="See Solution", command=self.see_solution)
         self.see_solution_btn.grid(row=0, column=0, columnspan=9, padx=10, pady=10)
         self.reset_btn = tk.Button(self.button_frame, text="Reset", command=self.reset)
