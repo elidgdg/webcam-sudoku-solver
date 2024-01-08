@@ -1,5 +1,6 @@
 import tkinter as tk
 import sudoku_algorithms
+import copy
 
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -72,7 +73,7 @@ class GUI():
         self.new_puzzle_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
 
     def see_solution(self):
-        board = self.get_board_values()
+        board = copy.deepcopy(self.initial_entries)
         sudoku_algorithms.solve(board)
         self.update_entries(board)
     
