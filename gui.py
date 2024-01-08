@@ -31,9 +31,9 @@ class GUI():
                 # Add the entry box to the grid
                 self.entries[i][j].grid(row=i, column=j, padx=padx, pady=pady, ipadx=5, ipady=5)
 
-        # Create instructions label
-        self.instructions = tk.Label(self.button_frame, text="Enter known digits, then click 'Start Solving'", wraplength=90, justify="center")
-        self.instructions.grid(row=0, column=0, columnspan=9, padx=10, pady=10) 
+        # Create message label
+        self.message_lbl = tk.Label(self.button_frame, text="Enter known digits, then click 'Start Solving'", wraplength=90, justify="center")
+        self.message_lbl.grid(row=0, column=0, columnspan=9, padx=10, pady=10) 
 
         # Create initial buttons
         self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
@@ -42,10 +42,9 @@ class GUI():
         self.camera_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
         
     def start_solving(self):
+        # Check if board is valid
         if not sudoku_algorithms.is_valid_board(self.get_board_values()):
-            print("Invalid board")
-            print(self.root.winfo_width())
-            print(self.root.winfo_height())
+            self.message_lbl.config(text="Invalid board. Please check your entries.")
             return
         # Destroy initial buttons
         self.start_solving_btn.destroy()
