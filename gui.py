@@ -40,21 +40,28 @@ class GUI():
         self.start_solving_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
         self.camera_btn = tk.Button(self.button_frame, text="Camera", command=self.open_camera)
         self.camera_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
+
+        # Variable for intial entries
+        self.initial_entries = []
         
     def start_solving(self):
         # Check if board is valid
         if not sudoku_algorithms.is_valid_board(self.get_board_values()):
             self.message_lbl.config(text="Invalid board. Please check your entries.")
             return
-        # Destroy initial buttons
+        # Destroy initial buttons and message label
         self.start_solving_btn.destroy()
         self.camera_btn.destroy()
+        self.message_lbl.destroy()
 
         # Make any non-empty entries read-only
         for i in range(9):
             for j in range(9):
                 if self.entries[i][j].get() != "":
                     self.entries[i][j].config(state="readonly")
+
+        # Store intial entries
+        self.initial_entries = self.get_board_values()
 
         # Create solve, reset, and new puzzle buttons
         self.see_solution_btn = tk.Button(self.button_frame, text="See Solution", command=self.see_solution)
@@ -70,7 +77,7 @@ class GUI():
         self.update_entries(board)
     
     def reset(self):
-        pass
+        self.update_entries(self.initial_entries)
     def new_puzzle(self):
         pass
     def open_camera(self):
@@ -96,7 +103,10 @@ class GUI():
         for i in range(9):
             for j in range(9):
                 self.entries[i][j].delete(0, tk.END) # delete current value
-                self.entries[i][j].insert(0, board[i][j]) # insert new value
+                if board[i][j] == 0:
+                    self.entries[i][j].insert(0, "") # insert empty string
+                else:
+                    self.entries[i][j].insert(0, board[i][j]) # insert new value
     
     def create_solve_button(self):
         solve_button = tk.Button(self.button_frame, text="Solve" , command=lambda: self.gui_solve())
