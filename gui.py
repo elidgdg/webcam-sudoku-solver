@@ -90,14 +90,35 @@ class GUI():
             self.message_lbl.config(text="Invalid board. Please check your entries.")
             return
         
+        # get new board with hint
         new_board = sudoku_algorithms.random_hint(self.get_board_values())
+
+        # check if there are any empty cells
         if new_board == None:
             self.message_lbl.config(text="No empty cells.")
             return
+        
         self.update_entries(new_board)
 
     def new_puzzle(self):
-        pass
+        self.see_solution_btn.destroy()
+        self.reset_btn.destroy()
+        self.new_puzzle_btn.destroy()
+        self.hint_btn.destroy()
+
+        self.message_lbl.config(text="Enter known digits, then click 'Start Solving'")
+        self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
+        self.start_solving_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
+        self.camera_btn = tk.Button(self.button_frame, text="Camera", command=self.open_camera)
+        self.camera_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
+
+        # Make all entries empty
+        for i in range(9):
+            for j in range(9):
+                self.entries[i][j].config(state="normal")
+                self.entries[i][j].delete(0, tk.END)
+                
+
     def open_camera(self):
         pass
 

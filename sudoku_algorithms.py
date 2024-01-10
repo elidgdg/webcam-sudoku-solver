@@ -66,6 +66,7 @@ def is_valid_board(board):
 def random_hint(board):
     # get current board
     board = copy.deepcopy(board)
+    # get solution
     solution = copy.deepcopy(board)
     solve(solution)
 
