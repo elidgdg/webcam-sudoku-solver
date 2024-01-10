@@ -1,3 +1,6 @@
+import random
+import copy
+
 # find first empty cell
 def find_empty_cell(board):
     for i in range(9):
@@ -59,3 +62,29 @@ def is_valid_board(board):
                     return False
                 board[i][j] = num # reset cell to original value
     return True
+
+def random_hint(board):
+    # get current board
+    board = copy.deepcopy(board)
+    solution = copy.deepcopy(board)
+    solve(solution)
+
+    # find empty cells
+    empty_cells = []
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == 0:
+                empty_cells.append((i,j))
+    
+    if len(empty_cells) == 0:
+        return None
+    
+    # choose random empty cell
+    row, col = random.choice(empty_cells)
+
+    # set cell to solution
+    board[row][col] = solution[row][col]
+
+    return board
+
+    

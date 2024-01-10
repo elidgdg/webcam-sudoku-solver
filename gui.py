@@ -53,7 +53,9 @@ class GUI():
         # Destroy initial buttons and message label
         self.start_solving_btn.destroy()
         self.camera_btn.destroy()
-        self.message_lbl.destroy()
+
+        # Change message label
+        self.message_lbl.config(text="Good luck!")
 
         # Make any non-empty entries read-only
         for i in range(9):
@@ -66,11 +68,13 @@ class GUI():
 
         # Create solve, reset, and new puzzle buttons
         self.see_solution_btn = tk.Button(self.button_frame, text="See Solution", command=self.see_solution)
-        self.see_solution_btn.grid(row=0, column=0, columnspan=9, padx=10, pady=10)
+        self.see_solution_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
         self.reset_btn = tk.Button(self.button_frame, text="Reset", command=self.reset)
-        self.reset_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
+        self.reset_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
         self.new_puzzle_btn = tk.Button(self.button_frame, text="New Puzzle", command=self.new_puzzle)
-        self.new_puzzle_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
+        self.new_puzzle_btn.grid(row=3, column=0, columnspan=9, padx=10, pady=10)
+        self.hint_btn = tk.Button(self.button_frame, text="Hint", command=self.show_hint)
+        self.hint_btn.grid(row=4, column=0, columnspan=9, padx=10, pady=10)
 
     def see_solution(self):
         board = copy.deepcopy(self.initial_entries)
@@ -79,6 +83,19 @@ class GUI():
     
     def reset(self):
         self.update_entries(self.initial_entries)
+
+    def show_hint(self):
+        # check if board is valid
+        if not sudoku_algorithms.is_valid_board(self.get_board_values()):
+            self.message_lbl.config(text="Invalid board. Please check your entries.")
+            return
+        
+        new_board = sudoku_algorithms.random_hint(self.get_board_values())
+        if new_board == None:
+            self.message_lbl.config(text="No empty cells.")
+            return
+        self.update_entries(new_board)
+
     def new_puzzle(self):
         pass
     def open_camera(self):
@@ -109,7 +126,3 @@ class GUI():
                 else:
                     self.entries[i][j].insert(0, board[i][j]) # insert new value
     
-    def create_solve_button(self):
-        solve_button = tk.Button(self.button_frame, text="Solve" , command=lambda: self.gui_solve())
-        solve_button.grid(row=10, column=0, columnspan=9, padx=10, pady=10)
-        return solve_button
