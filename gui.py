@@ -2,6 +2,7 @@ import tkinter as tk
 import sudoku_algorithms
 import copy
 import cv2
+from PIL import Image, ImageTk
 
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -125,8 +126,57 @@ class GUI():
                 self.entries[i][j].config(state="normal")
                 self.entries[i][j].delete(0, tk.END)
                 
-
+# display camera feed next to sudoku grid
     def open_camera(self):
+        # destroy buttons
+        self.start_solving_btn.destroy()
+        self.camera_btn.destroy()
+
+        # create frame for camera feed
+        self.camera_frame = tk.Frame(self.button_frame)
+        self.camera_frame.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
+
+        # create frame for buttons
+        self.button_frame2 = tk.Frame(self.button_frame)
+        self.button_frame2.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
+
+        # create button to take picture
+        self.take_picture_btn = tk.Button(self.button_frame2, text="Take Picture", command=self.take_picture)
+        self.take_picture_btn.grid(row=0, column=0, padx=10, pady=10)
+        self.back_btn = tk.Button(self.button_frame2, text="Back", command=self.back)
+        self.back_btn.grid(row=0, column=1, padx=10, pady=10)
+
+        # create camera feed
+        self.camera = cv2.VideoCapture(0)
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 252)
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 252)
+        self.camera.set(cv2.CAP_PROP_FPS, 30)
+
+        # create canvas to display camera feed
+        self.canvas = tk.Canvas(self.camera_frame, width=252, height=252)
+        self.canvas.grid(row=0, column=0, padx=10, pady=10)
+
+        # create timer to update camera feed
+        self.update_camera()
+    
+    def update_camera(self):
+        # get frame from camera
+        _, frame = self.camera.read()
+        # frame = cv2.flip(frame, 1)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = Image.fromarray(frame)
+        frame = ImageTk.PhotoImage(frame)
+
+        # update canvas with new frame
+        self.canvas.create_image(0, 0, image=frame, anchor="nw")
+        self.canvas.image = frame
+
+        # update camera feed every 15 milliseconds
+        self.root.after(15, self.update_camera)
+    
+    def take_picture(self):
+        pass
+    def back(self):
         pass
 
 
