@@ -1,6 +1,7 @@
 import tkinter as tk
 import sudoku_algorithms
 import copy
+import cv2
 
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -44,11 +45,17 @@ class GUI():
 
         # Variable for intial entries
         self.initial_entries = []
+    
+    # temporarily show an error message
+    def show_error_message(self, message):
+        current_message = self.message_lbl.cget("text") # get current message
+        self.message_lbl.config(text=message, fg="red") # change message to error message
+        self.root.after(2000, lambda: self.message_lbl.config(text=current_message, fg="black")) # change message back to original message after 2 seconds
         
     def start_solving(self):
         # Check if board is valid
         if not sudoku_algorithms.is_valid_board(self.get_board_values()):
-            self.message_lbl.config(text="Invalid board. Please check your entries.")
+            self.show_error_message("Invalid board. Please check your entries.")
             return
         # Destroy initial buttons and message label
         self.start_solving_btn.destroy()
@@ -87,7 +94,7 @@ class GUI():
     def show_hint(self):
         # check if board is valid
         if not sudoku_algorithms.is_valid_board(self.get_board_values()):
-            self.message_lbl.config(text="Invalid board. Please check your entries.")
+            self.show_error_message("Invalid board. Please check your entries.")
             return
         
         # get new board with hint
@@ -95,7 +102,7 @@ class GUI():
 
         # check if there are any empty cells
         if new_board == None:
-            self.message_lbl.config(text="No empty cells.")
+            self.show_error_message("No empty cells.")
             return
         
         self.update_entries(new_board)
