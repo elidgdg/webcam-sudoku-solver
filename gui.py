@@ -156,10 +156,16 @@ class GUI():
         self.canvas = tk.Canvas(self.camera_frame, width=252, height=252)
         self.canvas.grid(row=0, column=0, padx=10, pady=10)
 
+        # variable to keep track of whether camera is running
+        self.camera_running = True
+
         # create timer to update camera feed
         self.update_camera()
     
     def update_camera(self):
+        if self.camera_running == False:
+            return
+        
         # get frame from camera
         _, frame = self.camera.read()
         # frame = cv2.flip(frame, 1)
@@ -177,7 +183,19 @@ class GUI():
     def take_picture(self):
         pass
     def back(self):
-        pass
+        # stop camera feed
+        self.camera_running = False
+        self.camera.release()
+
+        # destroy camera feed and buttons
+        self.camera_frame.destroy()
+        self.button_frame2.destroy()
+
+        # create initial buttons
+        self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
+        self.start_solving_btn.grid(row=1, column=0, columnspan=9, padx=10, pady=10)
+        self.camera_btn = tk.Button(self.button_frame, text="Camera", command=self.open_camera)
+        self.camera_btn.grid(row=2, column=0, columnspan=9, padx=10, pady=10)
 
 
     def get_board_values(self):
