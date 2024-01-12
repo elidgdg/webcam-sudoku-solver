@@ -128,6 +128,8 @@ class GUI():
                 
 # display camera feed next to sudoku grid
     def open_camera(self):
+        # change message label
+        self.message_lbl.config(text="Take a picture of the sudoku board")
         # destroy buttons
         self.start_solving_btn.destroy()
         self.camera_btn.destroy()
@@ -153,8 +155,8 @@ class GUI():
         self.camera.set(cv2.CAP_PROP_FPS, 30)
 
         # create canvas to display camera feed
-        self.canvas = tk.Canvas(self.camera_frame, width=252, height=252)
-        self.canvas.grid(row=0, column=0, padx=10, pady=10)
+        self.camera_canvas = tk.Canvas(self.camera_frame, width=252, height=252)
+        self.camera_canvas.grid(row=0, column=0, padx=10, pady=10)
 
         # variable to keep track of whether camera is running
         self.camera_running = True
@@ -174,14 +176,15 @@ class GUI():
         frame = ImageTk.PhotoImage(frame)
 
         # update canvas with new frame
-        self.canvas.create_image(0, 0, image=frame, anchor="nw")
-        self.canvas.image = frame
+        self.camera_canvas.create_image(0, 0, image=frame, anchor="nw")
+        self.camera_canvas.image = frame
 
         # update camera feed every 15 milliseconds
         self.root.after(15, self.update_camera)
     
     def take_picture(self):
         pass
+
     def back(self):
         # stop camera feed
         self.camera_running = False
@@ -190,6 +193,9 @@ class GUI():
         # destroy camera feed and buttons
         self.camera_frame.destroy()
         self.button_frame2.destroy()
+
+        # change message label
+        self.message_lbl.config(text="Enter known digits, then click 'Start Solving'")
 
         # create initial buttons
         self.start_solving_btn = tk.Button(self.button_frame, text="Start Solving", command=self.start_solving)
