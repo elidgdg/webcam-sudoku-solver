@@ -1,11 +1,11 @@
 import cv2 # Import the OpenCV library
 import numpy as np # Import Numpy library
 import torch # Import PyTorch library
-import model2 # Import the model.py file
+import model3 # Import the model.py file
 
 # load model.pt
-model = model2.Net()
-model.load_state_dict(torch.load('model2.pt'))
+model = model3.CombinedModel()
+model.load_state_dict(torch.load('combined_model.pt'))
 model.eval()
 
 img_path = 'sudoku_test.jpg'
