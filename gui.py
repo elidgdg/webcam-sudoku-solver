@@ -183,7 +183,15 @@ class GUI():
         self.root.after(15, self.update_camera)
     
     def take_picture(self):
-        pass
+        # take and display picture
+        self.camera_running = False
+        _, frame = self.camera.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = Image.fromarray(frame)
+        frame = ImageTk.PhotoImage(frame)
+        self.camera_canvas.create_image(0, 0, image=frame, anchor="nw")
+        self.camera_canvas.image = frame
+
 
     def back(self):
         # stop camera feed
