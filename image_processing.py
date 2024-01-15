@@ -1,11 +1,42 @@
 import cv2 # Import the OpenCV library
 import numpy as np # Import Numpy library
 import torch # Import PyTorch library
-import model3 # Import the model.py file
+# from model import LargerModel
+from torch.utils.data import DataLoader
+from torchvision import datasets
+from torchvision.transforms import ToTensor
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+
+class LargerModel(nn.Module):
+    def __init__(self, num_classes):
+        super(LargerModel, self).__init__()
+        self.conv1 = nn.Conv2d(1, 30, kernel_size=5)
+        self.pool1 = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(30, 15, kernel_size=3)
+        self.pool2 = nn.MaxPool2d(2, 2)
+        self.dropout = nn.Dropout2d(0.2)
+        self.flatten = nn.Flatten()
+        self.fc1 = nn.Linear(15 * 5 * 5, 128)
+        self.fc2 = nn.Linear(128, 50)
+        self.fc3 = nn.Linear(50, num_classes)
+
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        x = self.pool1(x)
+        x = F.relu(self.conv2(x))
+        x = self.pool2(x)
+        x = self.dropout(x)
+        x = self.flatten(x)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return F.softmax(x, dim=1)
 
 # load model.pt
-model = model3.CombinedModel()
-model.load_state_dict(torch.load('combined_model.pt'))
+model = LargerModel(10)
+model.load_state_dict(torch.load('model.pth'))
 model.eval()
 
 img_path = 'sudoku_test.jpg'
