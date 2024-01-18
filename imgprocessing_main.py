@@ -29,9 +29,9 @@ for i in range(9):
     board.append(predicted[i*9 : (i+1)*9])
 
 # Solve the sudoku
-solved_board = board.copy()
-sudoku_algorithms.solve(solved_board)
-print(solved_board)
+# solved_board = board.copy()
+# sudoku_algorithms.solve(solved_board)
+# print(solved_board)
 
 # display 71st box
 cv2.imshow('71st box', squares[80])
@@ -39,6 +39,5 @@ cv2.imshow('71st box', squares[80])
 cv2.imshow('Image', img_processed)
 cv2.imshow('Contours', img_warped) 
 # show 8th box
-cv2.imshow('8th box', squares[7])
+cv2.imshow('8th box', squares[10])
 cv2.waitKey(0)
-
