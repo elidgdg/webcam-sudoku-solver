@@ -34,6 +34,11 @@ class GUI():
                 # Add the entry box to the grid
                 self.entries[i][j].grid(row=i, column=j, padx=padx, pady=pady, ipadx=5, ipady=5)
 
+                # Add a callback to the entry box to only allow digits
+                reg = self.entries[i][j].register(self.callback)
+                self.entries[i][j].config(validate="key", validatecommand=(reg, "%P"))
+
+
         # Create message label
         self.message_lbl = tk.Label(self.button_frame, text="Enter known digits, then click 'Start Solving'", wraplength=90, justify="center")
         self.message_lbl.grid(row=0, column=0, columnspan=9, padx=10, pady=10) 
@@ -46,7 +51,13 @@ class GUI():
 
         # Variable for intial entries
         self.initial_entries = []
-    
+
+    def callback(self, input):
+        if len(input) <= 1 and input.isdigit() or input == "":
+            return True
+        else:
+            return False
+
     # temporarily show an error message
     def show_error_message(self, message):
         current_message = self.message_lbl.cget("text") # get current message
