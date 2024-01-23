@@ -52,8 +52,43 @@ class GUI():
         # Variable for intial entries
         self.initial_entries = []
 
+    def highlight_conflicts(self, row, col):
+        board = self.get_board_values()
+        # check row
+        for i in range(9):
+            if board[row][i] == 0:
+                self.entries[row][i].config(bg="white")
+                continue
+            else:
+                temp = board[row][i]
+                board [row][i] = 0
+                if sudoku_algorithms.cell_valid(board, row, i, temp) == False:
+                    self.entries[row][i].config(bg="red")
+                else:
+                    self.entries[row][i].config(bg="white")
+
+        # # check column
+        # for i in range(9):
+        #     if sudoku_algorithms.cell_valid(board, i, col, board[i][col]) == False:
+        #         self.entries[i][col].config(bg="red")
+        #     else:
+        #         self.entries[i][col].config(bg="white")
+        
+        # # check box
+        # start_row = (row // 3) * 3
+        # start_col = (col // 3) * 3
+        # for i in range(3):
+        #     for j in range(3):
+        #         if sudoku_algorithms.cell_valid(board, start_row + i, start_col + j, board[start_row + i][start_col + j]) == False:
+        #             self.entries[start_row + i][start_col + j].config(bg="red")
+        #         else:
+        #             self.entries[start_row + i][start_col + j].config(bg="white")
+        
+
     def callback(self, input):
         if len(input) <= 1 and input.isdigit() or input == "":
+            # highlight conflicts
+            self.root.after(10, lambda: self.highlight_conflicts(int(self.root.focus_get().grid_info()["row"]), int(self.root.focus_get().grid_info()["column"])))
             return True
         else:
             return False
