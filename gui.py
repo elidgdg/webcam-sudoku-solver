@@ -54,6 +54,7 @@ class GUI():
 
     def highlight_conflicts(self, row, col):
         board = self.get_board_values()
+        print(board)
         # check row
         for i in range(9):
             if board[row][i] == 0:
@@ -66,25 +67,39 @@ class GUI():
                     self.entries[row][i].config(bg="red")
                 else:
                     self.entries[row][i].config(bg="white")
+                board[row][i] = temp
 
-        # # check column
-        # for i in range(9):
-        #     if sudoku_algorithms.cell_valid(board, i, col, board[i][col]) == False:
-        #         self.entries[i][col].config(bg="red")
-        #     else:
-        #         self.entries[i][col].config(bg="white")
+        # check column
+        for i in range(9):
+            if board[i][col] == 0:
+                self.entries[i][col].config(bg="white")
+                continue
+            else:
+                temp = board[i][col]
+                board [i][col] = 0
+                if sudoku_algorithms.cell_valid(board, i, col, temp) == False:
+                    self.entries[i][col].config(bg="red")
+                else:
+                    self.entries[i][col].config(bg="white")
+                board[i][col] = temp
         
-        # # check box
-        # start_row = (row // 3) * 3
-        # start_col = (col // 3) * 3
-        # for i in range(3):
-        #     for j in range(3):
-        #         if sudoku_algorithms.cell_valid(board, start_row + i, start_col + j, board[start_row + i][start_col + j]) == False:
-        #             self.entries[start_row + i][start_col + j].config(bg="red")
-        #         else:
-        #             self.entries[start_row + i][start_col + j].config(bg="white")
+        # check box
+        start_row = (row // 3) * 3
+        start_col = (col // 3) * 3
+        for i in range(3):
+            for j in range(3):
+                if board[start_row + i][start_col + j] == 0:
+                    self.entries[start_row + i][start_col + j].config(bg="white")
+                    continue
+                else:
+                    temp = board[start_row + i][start_col + j]
+                    board[start_row + i][start_col + j] = 0
+                    if sudoku_algorithms.cell_valid(board, start_row + i, start_col + j, temp) == False:
+                        self.entries[start_row + i][start_col + j].config(bg="red")
+                    else:
+                        self.entries[start_row + i][start_col + j].config(bg="white")
+                    board[start_row + i][start_col + j] = temp
         
-
     def callback(self, input):
         if len(input) <= 1 and input.isdigit() or input == "":
             # highlight conflicts
