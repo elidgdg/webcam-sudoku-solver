@@ -52,6 +52,7 @@ class GUI():
         # Variable for intial entries
         self.initial_entries = []
 
+##get rid of continue statements?
     def highlight_conflicts(self, row, col):
         board = self.get_board_values()
         print(board)
