@@ -43,8 +43,8 @@ img_path = 'sudoku_test.jpg'
 
 def process_image(img_path, img_width=450, img_height=450):
     # Read the image
-    img = cv2.imread(img_path)
-    img_resize = cv2.resize(img, (img_width, img_height))
+    # img = cv2.imread(img_path)
+    img_resize = cv2.resize(img_path, (img_width, img_height))
 
     #Preprocess the image
     img_gray = cv2.cvtColor(img_resize, cv2.COLOR_BGR2GRAY)
@@ -53,14 +53,14 @@ def process_image(img_path, img_width=450, img_height=450):
 
     return img_thresh
 
-def contours(img):   
+def get_contours(img):   
     # Find the contours
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     # img_contours = img.copy()
     # cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 3)
     return contours
 
-def biggest_contour(contours): 
+def get_biggest_contour(contours): 
     # Find the biggest contour
     biggest_contour = np.array([])
     max_area = 0
@@ -131,8 +131,20 @@ def predict_digits(squares, img_width=450, img_height=450):
             result.append(predicted.item())
         else:
             result.append(0)
+    
+    # reshape result into 9x9 grid
+    result = np.array(result).reshape((9, 9))
     return result
 
+def predict_main(img):
+    img_processed = process_image(img)
+    contours = get_contours(img_processed)
+    biggest_contour = get_biggest_contour(contours)
+    biggest_contour = reorder(biggest_contour)
+    img_warped = warp(img_processed, biggest_contour)
+    squares = split_grid(img_warped)
+    predicted = predict_digits(squares)
+    return predicted
 
 # result = predict_digits(squares)
 # print(result)
