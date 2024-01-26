@@ -4,6 +4,7 @@ import copy
 import cv2
 from PIL import Image, ImageTk
 import image_processing
+import image_processing2
 
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -246,9 +247,10 @@ class GUI():
         _, frame = self.camera.read()
         # crop image to 252x252
         frame = frame[0:252, 0:252]
-        digits = image_processing.predict_main(frame)
-        print(digits)
-        self.update_entries(digits)
+        # digits = image_processing.predict_main(frame)
+        # print(digits)
+        # self.update_entries(digits)
+        image_processing2.predict_all(frame)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = Image.fromarray(frame)
         frame = ImageTk.PhotoImage(frame)
