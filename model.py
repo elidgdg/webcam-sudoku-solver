@@ -1,6 +1,6 @@
-from torch.utils.data import DataLoader # PyTorch data loader module
+from torch.utils.data import DataLoader, ConcatDataset, Dataset # PyTorch data loader module
 from torchvision import datasets # PyTorch vision module
-from torchvision.transforms import ToTensor # Transform the data into PyTorch Tensors
+from torchvision.transforms import ToTensor, transforms # Transform the data into PyTorch Tensors
 import torch # PyTorch module
 import torch.nn as nn # PyTorch neural network module
 import torch.nn.functional as F # PyTorch functional module
@@ -13,54 +13,83 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+class CustomDataset(Dataset):
+    def __init__(self, root_dir):
+        self.root_dir = root_dir
+        self.transform = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Grayscale(num_output_channels=1),
+            transforms.ToTensor(),
+        ])
 
-training_data = datasets.MNIST(
+        self.data = []
+        self.labels = []
+
+        for i in range(10):
+            for d in os.listdir(os.path.join(root_dir, str(i))):
+                img_path = os.path.join(root_dir, str(i), d)
+                img = cv2.imread(img_path)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert to RGB
+                self.data.append(self.transform(img))
+                self.labels.append(i)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        return self.data[idx], self.labels[idx]
+
+mnist_data = datasets.MNIST(
     root="data",
     train=True,
     download=True,
     transform=ToTensor()
 )
 
-test_data = datasets.MNIST(
-    root="data",
-    train=False,
-    download=True,
-    transform=ToTensor()
-)
+custom_data = CustomDataset("assets")
+
+# test_data = datasets.MNIST(
+#     root="data",
+#     train=False,
+#     download=True,
+#     transform=ToTensor()
+# )
+
+combined_data = ConcatDataset([mnist_data, custom_data])
+combined_train, combined_test = train_test_split(combined_data, test_size=0.2, random_state=21)
 
 loaders = {
-    "train": DataLoader(training_data, batch_size=64),
-    "test": DataLoader(test_data, batch_size=64)
+    "train": DataLoader(combined_train, batch_size=64),
+    "test": DataLoader(combined_test, batch_size=64)
 }
 
-X = []
-y = []
-for i in range(10):
-    for d in os.listdir("assets/{}".format(i)):
-        t_img = cv2.imread("assets/{}".format(i)+"/"+d)
-        t_img = cv2.cvtColor(t_img,cv2.COLOR_BGR2GRAY)
-        X.append(t_img)
-        y.append(i)
+# X = []
+# y = []
+# for i in range(10):
+#     for d in os.listdir("assets/{}".format(i)):
+#         t_img = cv2.imread("assets/{}".format(i)+"/"+d)
+#         t_img = cv2.cvtColor(t_img,cv2.COLOR_BGR2GRAY)
+#         X.append(t_img)
+#         y.append(i)
 
-X = np.array(X)
-y = np.array(y)
+# X = np.array(X)
+# y = np.array(y)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=21)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=21)
 
-X_train = torch.from_numpy(X_train)
-X_test = torch.from_numpy(X_test)
-y_train = torch.from_numpy(y_train)
-y_test = torch.from_numpy(y_test)
+# X_train = torch.from_numpy(X_train)
+# X_test = torch.from_numpy(X_test)
+# y_train = torch.from_numpy(y_train)
+# y_test = torch.from_numpy(y_test)
 
-X_train = X_train.view(X_train.shape[0], 28, 28, 1).to(torch.float32)
-X_test = X_test.view(X_test.shape[0], 28, 28, 1).to(torch.float32)
+# X_train = X_train.view(X_train.shape[0], 28, 28, 1).to(torch.float32)
+# X_test = X_test.view(X_test.shape[0], 28, 28, 1).to(torch.float32)
 
-X_train = X_train / 255.0
-X_test = X_test / 255.0
+# X_train = X_train / 255.0
+# X_test = X_test / 255.0
 
-y_train = y_train.to(torch.long)
-y_test = y_test.to(torch.long)
-
+# y_train = y_train.to(torch.long)
+# y_test = y_test.to(torch.long)
 
 class LargerModel(nn.Module):
     def __init__(self, num_classes):
