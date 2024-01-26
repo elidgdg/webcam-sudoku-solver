@@ -52,15 +52,12 @@ class GUI():
         # Variable for intial entries
         self.initial_entries = []
 
-##get rid of continue statements?
     def highlight_conflicts(self, row, col):
         board = self.get_board_values()
-        print(board)
         # check row
         for i in range(9):
             if board[row][i] == 0:
                 self.entries[row][i].config(bg="white")
-                continue
             else:
                 temp = board[row][i]
                 board [row][i] = 0
@@ -74,7 +71,6 @@ class GUI():
         for i in range(9):
             if board[i][col] == 0:
                 self.entries[i][col].config(bg="white")
-                continue
             else:
                 temp = board[i][col]
                 board [i][col] = 0
@@ -91,7 +87,6 @@ class GUI():
             for j in range(3):
                 if board[start_row + i][start_col + j] == 0:
                     self.entries[start_row + i][start_col + j].config(bg="white")
-                    continue
                 else:
                     temp = board[start_row + i][start_col + j]
                     board[start_row + i][start_col + j] = 0
