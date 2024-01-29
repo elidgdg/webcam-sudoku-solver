@@ -105,9 +105,6 @@ def extract_digit(cell):
         return None
     
     digit = cv2.bitwise_and(thresh, thresh, mask = mask)
-    # print(predict(digit))
-    # cv2.imshow('Digit', digit)
-    # cv2.waitKey(0)
 
     return digit
 
