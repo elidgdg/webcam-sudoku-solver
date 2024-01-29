@@ -3,7 +3,6 @@ import sudoku_algorithms
 import copy
 import cv2
 from PIL import Image, ImageTk
-import image_processing
 import image_processing2
 
 # grid_frame = tk.Frame(root)
