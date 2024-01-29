@@ -246,6 +246,13 @@ class GUI():
         self.root.after(15, self.update_camera)
     
     def take_picture(self):
+        # destroy button
+        self.take_picture_btn.destroy()
+
+        # create button to retake picture
+        self.retake_btn = tk.Button(self.button_frame2, text="Retake Picture", command=self.retake_picture)
+        self.retake_btn.grid(row=0, column=0, padx=10, pady=10)
+
         # take and display picture
         self.camera_running = False
         _, frame = self.camera.read()
@@ -259,6 +266,17 @@ class GUI():
         self.camera_canvas.create_image(0, 0, image=frame, anchor="nw")
         self.camera_canvas.image = frame
 
+    def retake_picture(self):
+        # destroy button
+        self.retake_btn.destroy()
+
+        # create button to take picture
+        self.take_picture_btn = tk.Button(self.button_frame2, text="Take Picture", command=self.take_picture)
+        self.take_picture_btn.grid(row=0, column=0, padx=10, pady=10)
+
+        # restart camera feed
+        self.camera_running = True
+        self.update_camera()
 
     def back(self):
         # stop camera feed
