@@ -48,13 +48,6 @@ mnist_data = datasets.MNIST(
 
 custom_data = CustomDataset("assets")
 
-# test_data = datasets.MNIST(
-#     root="data",
-#     train=False,
-#     download=True,
-#     transform=ToTensor()
-# )
-
 combined_data = ConcatDataset([mnist_data, custom_data])
 combined_train, combined_test = train_test_split(combined_data, test_size=0.2, random_state=21)
 
@@ -62,34 +55,6 @@ loaders = {
     "train": DataLoader(combined_train, batch_size=64),
     "test": DataLoader(combined_test, batch_size=64)
 }
-
-# X = []
-# y = []
-# for i in range(10):
-#     for d in os.listdir("assets/{}".format(i)):
-#         t_img = cv2.imread("assets/{}".format(i)+"/"+d)
-#         t_img = cv2.cvtColor(t_img,cv2.COLOR_BGR2GRAY)
-#         X.append(t_img)
-#         y.append(i)
-
-# X = np.array(X)
-# y = np.array(y)
-
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=21)
-
-# X_train = torch.from_numpy(X_train)
-# X_test = torch.from_numpy(X_test)
-# y_train = torch.from_numpy(y_train)
-# y_test = torch.from_numpy(y_test)
-
-# X_train = X_train.view(X_train.shape[0], 28, 28, 1).to(torch.float32)
-# X_test = X_test.view(X_test.shape[0], 28, 28, 1).to(torch.float32)
-
-# X_train = X_train / 255.0
-# X_test = X_test / 255.0
-
-# y_train = y_train.to(torch.long)
-# y_test = y_test.to(torch.long)
 
 class LargerModel(nn.Module):
     def __init__(self, num_classes):
