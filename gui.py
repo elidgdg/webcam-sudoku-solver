@@ -3,7 +3,7 @@ import sudoku_algorithms
 import copy
 import cv2
 from PIL import Image, ImageTk
-import image_processing2
+import image_processing
 
 # grid_frame = tk.Frame(root)
 # grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -249,7 +249,7 @@ class GUI():
         # digits = image_processing.predict_main(frame)
         # print(digits)
         # self.update_entries(digits)
-        predicted = image_processing2.predict_all(frame)
+        predicted = image_processing.predict_all(frame)
         self.update_entries(predicted)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = Image.fromarray(frame)
