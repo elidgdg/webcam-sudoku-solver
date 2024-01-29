@@ -141,10 +141,12 @@ class GUI():
         self.hint_btn.grid(row=4, column=0, columnspan=9, padx=10, pady=10)
 
     def see_solution(self):
+        # if possible, solve current board
         if sudoku_algorithms.is_valid_board(self.get_board_values()):
             current_board = self.get_board_values()
             sudoku_algorithms.solve(current_board)
             self.update_entries(current_board)
+        # if not possible, solve initial board
         else:
             self.show_error_message("Current board has no solution. Showing solution to initial board.")
             board = copy.deepcopy(self.initial_entries)
