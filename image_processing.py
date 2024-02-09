@@ -8,9 +8,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class LargerModel(nn.Module):
+class DigitRecogNetwork(nn.Module):
     def __init__(self, num_classes):
-        super(LargerModel, self).__init__()
+        super(DigitRecogNetwork, self).__init__()
         self.conv1 = nn.Conv2d(1, 30, kernel_size=5)
         self.pool1 = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(30, 15, kernel_size=3)
@@ -34,7 +34,7 @@ class LargerModel(nn.Module):
         return F.softmax(x, dim=1)
 
 # load model.pt
-model = LargerModel(10)
+model = DigitRecogNetwork(10)
 model.load_state_dict(torch.load('model.pth'))
 model.eval()
 

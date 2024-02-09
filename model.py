@@ -56,9 +56,9 @@ loaders = {
     "test": DataLoader(combined_test, batch_size=64)
 }
 
-class LargerModel(nn.Module):
+class DigitRecogNetwork(nn.Module):
     def __init__(self, num_classes):
-        super(LargerModel, self).__init__()
+        super(DigitRecogNetwork, self).__init__()
         self.conv1 = nn.Conv2d(1, 30, kernel_size=5)
         self.pool1 = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(30, 15, kernel_size=3)
@@ -83,7 +83,7 @@ class LargerModel(nn.Module):
 
 # Instantiate the model
 num_classes = 10  # Assuming you have 10 classes
-model = LargerModel(num_classes)
+model = DigitRecogNetwork(num_classes)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
