@@ -38,10 +38,10 @@ model = DigitRecogNetwork(10)
 model.load_state_dict(torch.load('model.pth'))
 model.eval()
 
-def find_puzzle(image):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # blurred = cv2.GaussianBlur(gray, (7,7), 3)
-    thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+def find_puzzle(img):
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # blurred = cv2.GaussianBlur(img_gray, (7,7), 3)
+    thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                     cv2.THRESH_BINARY, 11, 2)
     thresh = cv2.bitwise_not(thresh)
     
@@ -50,24 +50,24 @@ def find_puzzle(image):
     cnts = imutils.grab_contours(cnts)
     cnts = sorted(cnts, key = cv2.contourArea, reverse = True)
 
-    puzzleCnt = None
+    puzzle_cnt = None
 
     for c in cnts:
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, peri*0.02, True)
 
         if len(approx) == 4:
-            puzzleCnt = approx
+            puzzle_cnt = approx
             break
 
-    if puzzleCnt is not None:
+    if puzzle_cnt is not None:
     
-        output = image.copy()
-        cv2.drawContours(output, [puzzleCnt], -1, (0,255,0), 2)
+        output = img.copy()
+        cv2.drawContours(output, [puzzle_cnt], -1, (0,255,0), 2)
         cv2.imshow('Puzzle Outline', output)
         
-        puzzle = four_point_transform(image, puzzleCnt.reshape(4,2))
-        warped = four_point_transform(gray, puzzleCnt.reshape(4,2))
+        puzzle = four_point_transform(img, puzzle_cnt.reshape(4,2))
+        warped = four_point_transform(img_gray, puzzle_cnt.reshape(4,2))
 
         cv2.imshow('Puzzle Transform', puzzle)
 
@@ -111,7 +111,7 @@ def extract_digit(cell):
 
 
 def predict_all(img):
-    (puzzleImage, warped) = find_puzzle(img)
+    (puzzle_img, warped) = find_puzzle(img)
     board = np.zeros((9,9), dtype = 'int')
     stepX = warped.shape[1] // 9
     stepY = warped.shape[0] // 9
