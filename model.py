@@ -9,9 +9,6 @@ import os
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 class CustomDataset(Dataset):
     def __init__(self, root_dir):
