@@ -32,13 +32,11 @@ def solve(board):
     if find_empty_cell(board) == None:
         return True
     
-    # find next empty cell
     row, col = find_empty_cell(board)
 
     # try numbers from 1 to 9 in empty cell
     for num in range(1,10):
         if cell_valid(board, row, col, num):
-            # if valid, place num in empty cell
             board[row][col] = num
 
             # recursively solve the rest of the board
@@ -80,10 +78,8 @@ def random_hint(board):
     if len(empty_cells) == 0:
         return None
     
-    # choose random empty cell
+    # choose random empty cell and replace with solution
     row, col = random.choice(empty_cells)
-
-    # set cell to solution
     board[row][col] = solution[row][col]
 
     return board
