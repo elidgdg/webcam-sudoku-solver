@@ -3,10 +3,10 @@ import copy
 
 # find first empty cell
 def find_empty_cell(board):
-    for i in range(9):
-        for j in range(9):
-            if board[i][j] == 0:
-                return (i,j)
+    for row in range(9):
+        for col in range(9):
+            if board[row][col] == 0:
+                return (row,col)
     return None
 
 # check if placing num at (row, col) is valid
