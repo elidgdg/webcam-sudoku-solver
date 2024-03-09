@@ -22,6 +22,7 @@ class CustomDataset(Dataset):
         self.data = []
         self.labels = []
 
+        # Load the data
         for i in range(10):
             for d in os.listdir(os.path.join(root_dir, str(i))):
                 img_path = os.path.join(root_dir, str(i), d)
