@@ -37,6 +37,7 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         return self.data[idx], self.labels[idx]
 
+# Load MNIST data
 mnist_data = datasets.MNIST(
     root="data",
     train=True,
