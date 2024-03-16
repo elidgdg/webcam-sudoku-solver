@@ -81,7 +81,7 @@ class DigitRecogNetwork(nn.Module):
         return F.softmax(x, dim=1)
 
 # Instantiate the model
-num_classes = 10  # Assuming you have 10 classes
+num_classes = 10 # 0-9
 model = DigitRecogNetwork(num_classes)
 
 criterion = nn.CrossEntropyLoss()
