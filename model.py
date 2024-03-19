@@ -85,7 +85,7 @@ num_classes = 10 # 0-9
 model = DigitRecogNetwork(num_classes)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters())
 
 # Train the model
 for epoch in range(10):
