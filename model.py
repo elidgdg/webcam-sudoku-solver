@@ -102,6 +102,7 @@ for epoch in range(10):
         loss.backward()
         optimizer.step()
 
+        # Print the results
         if (i + 1) % 100 == 0:
             print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}"
                   .format(epoch + 1, 10, i + 1, len(loaders["train"]), loss.item()))
