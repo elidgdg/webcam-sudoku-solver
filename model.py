@@ -104,7 +104,7 @@ for epoch in range(10):
 
         # Print the results
         if (i + 1) % 100 == 0:
-            print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}"
+            print("Epoch [{}/{}], Batch [{}/{}], Loss: {:.4f}"
                   .format(epoch + 1, 10, i + 1, len(loaders["train"]), loss.item()))
             
 # Test the model
