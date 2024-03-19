@@ -84,7 +84,7 @@ class DigitRecogNetwork(nn.Module):
 num_classes = 10 # 0-9
 model = DigitRecogNetwork(num_classes)
 
-criterion = nn.CrossEntropyLoss()
+loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
 
 # Train the model
@@ -95,7 +95,7 @@ for epoch in range(10):
 
         # Forward pass
         outputs = model(inputs)
-        loss = criterion(outputs, labels)
+        loss = loss_fn(outputs, labels)
 
         # Backward and optimize
         optimizer.zero_grad()
