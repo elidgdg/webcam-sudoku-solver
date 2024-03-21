@@ -117,11 +117,11 @@ with torch.no_grad():
     for data in loaders["test"]:
         inputs, labels = data
         outputs = model(inputs)
-        _, predicted = torch.max(outputs.data, 1)
+        x, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-    print("Accuracy of the model on the 10000 test images: {} %".format(100 * correct / total))
+    print("Accuracy of the model on the test images: {} %".format(100 * correct / total))
 
-# Save the model checkpoint
+# Save the model parameters
 torch.save(model.state_dict(), "model.pth")
