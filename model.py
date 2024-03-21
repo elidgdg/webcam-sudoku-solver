@@ -108,10 +108,12 @@ for epoch in range(10):
                   .format(epoch + 1, 10, i + 1, len(loaders["train"]), loss.item()))
             
 # Test the model
-model.eval()
+model.eval() # Set the model to evaluation mode
+# Disable gradient calculation
 with torch.no_grad():
     correct = 0
     total = 0
+    # Produce predictions for test data
     for data in loaders["test"]:
         inputs, labels = data
         outputs = model(inputs)
