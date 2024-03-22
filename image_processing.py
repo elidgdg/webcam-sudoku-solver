@@ -52,9 +52,8 @@ def find_puzzle(img):
     cnts = imutils.grab_contours(cnts)
     cnts = sorted(cnts, key = cv2.contourArea, reverse = True)
 
-    puzzle_cnt = None
-
     # find largest quadrilateral contour
+    puzzle_cnt = None
     for c in cnts:
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, peri*0.02, True)
