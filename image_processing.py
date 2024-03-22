@@ -39,6 +39,7 @@ model.load_state_dict(torch.load('model.pth'))
 model.eval()
 
 def find_puzzle(img):
+    # image preprocessing
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # blurred = cv2.GaussianBlur(img_gray, (7,7), 3)
     thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
