@@ -46,6 +46,7 @@ def find_puzzle(img):
                                     cv2.THRESH_BINARY, 11, 2)
     thresh = cv2.bitwise_not(thresh)
     
+    # find contours in thresholded image
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
@@ -53,6 +54,7 @@ def find_puzzle(img):
 
     puzzle_cnt = None
 
+    # find largest quadrilateral contour
     for c in cnts:
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, peri*0.02, True)
