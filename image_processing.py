@@ -71,12 +71,12 @@ def find_puzzle(img):
         cv2.imshow('Puzzle Outline', output)
         
         # transform image to get top-down view
-        puzzle = four_point_transform(img, puzzle_cnt.reshape(4,2))
-        warped = four_point_transform(img_gray, puzzle_cnt.reshape(4,2))
+        # puzzle_warped = four_point_transform(img, puzzle_cnt.reshape(4,2))
+        puzzle_warped_gray = four_point_transform(img_gray, puzzle_cnt.reshape(4,2))
 
-        cv2.imshow('Puzzle Transform', puzzle)
+        cv2.imshow('Puzzle Transform', puzzle_warped_gray)
 
-    return (puzzle, warped)
+    return puzzle_warped_gray
 
 def predict(cell):
     cell = cv2.resize(cell, (28,28))
@@ -116,7 +116,7 @@ def extract_digit(cell):
 
 
 def predict_all(img):
-    (puzzle_img, warped) = find_puzzle(img)
+    warped = find_puzzle(img)
     board = np.zeros((9,9), dtype = 'int')
     stepX = warped.shape[1] // 9
     stepY = warped.shape[0] // 9
