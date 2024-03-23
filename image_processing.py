@@ -79,12 +79,14 @@ def find_puzzle(img):
     return puzzle_warped_gray
 
 def predict(cell):
+    # resize and preprocess cell
     cell = cv2.resize(cell, (28,28))
     cell = cell.reshape(1, 1, 28, 28)
     cell = torch.from_numpy(cell)
     cell = cell.to(torch.float32)
     cell = cell / 255.0
     cell = cell.to(torch.float32)
+    # predict digit
     cell = model(cell)
     cell = cell.argmax(dim=1, keepdim=True)
     return cell
