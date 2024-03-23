@@ -90,25 +90,30 @@ def predict(cell):
     return cell
 
 def extract_digit(cell):
+    # threshold and remove border
     thresh = cv2.threshold(cell, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
     thresh = clear_border(thresh)
 
+    # find contours
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
 
+    # if no contours found
     if len(cnts) == 0:
         return None
     
-    c = max(cnts, key = cv2.contourArea)
+    # find largest contour
+    largest_cnt = max(cnts, key = cv2.contourArea)
     mask = np.zeros(thresh.shape, dtype = 'uint8')
-    cv2.drawContours(mask, [c], -1, 255, -1)
+    cv2.drawContours(mask, [largest_cnt], -1, 255, -1)
 
+    # check if cell is empty
     (h,w) = thresh.shape
     percentFilled = cv2.countNonZero(mask)/float(w*h)
-
     if percentFilled < 0.03:
         return None
     
+    # apply mask to thresholded image
     digit = cv2.bitwise_and(thresh, thresh, mask = mask)
 
     return digit
