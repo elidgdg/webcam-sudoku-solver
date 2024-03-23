@@ -87,9 +87,9 @@ def predict(cell):
     # cell = cell / 255.0 ADD BACK IN IF BREAKS
     # cell = cell.to(torch.float32)
     # predict digit
-    cell = model(cell)
-    cell = cell.argmax(dim=1, keepdim=True)
-    return cell
+    prediction = model(cell)
+    prediction = prediction.argmax(dim=1, keepdim=True)
+    return prediction
 
 def extract_digit(cell):
     # threshold and remove border
