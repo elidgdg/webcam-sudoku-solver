@@ -104,19 +104,20 @@ def extract_digit(cell):
     
     # find largest contour
     largest_cnt = max(cnts, key = cv2.contourArea)
-    mask = np.zeros(thresh.shape, dtype = 'uint8')
-    cv2.drawContours(mask, [largest_cnt], -1, 255, -1)
+    # mask = np.zeros(thresh.shape, dtype = 'uint8')
+    largest_cnt_img = np.zeros(thresh.shape, dtype = 'uint8')
+    cv2.drawContours(largest_cnt_img, [largest_cnt], -1, 255, -1)
 
     # check if cell is empty
     (h,w) = thresh.shape
-    percentFilled = cv2.countNonZero(mask)/float(w*h)
+    percentFilled = cv2.countNonZero(largest_cnt_img)/float(w*h)
     if percentFilled < 0.03:
         return None
     
     # apply mask to thresholded image
-    digit = cv2.bitwise_and(thresh, thresh, mask = mask)
+    # digit = cv2.bitwise_and(thresh, thresh, mask = mask)
 
-    return digit
+    return largest_cnt_img
 
 
 
