@@ -43,8 +43,8 @@ def find_puzzle(img):
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # blurred = cv2.GaussianBlur(img_gray, (7,7), 3)
     thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                    cv2.THRESH_BINARY, 11, 2)
-    thresh = cv2.bitwise_not(thresh)
+                                    cv2.THRESH_BINARY_INV, 11, 2)
+    # thresh = cv2.bitwise_not(thresh)
     
     # find contours in thresholded image
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
