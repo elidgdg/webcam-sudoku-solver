@@ -84,8 +84,8 @@ def predict(cell):
     cell = cell.reshape(1, 1, 28, 28)
     cell = torch.from_numpy(cell)
     cell = cell.to(torch.float32)
-    cell = cell / 255.0
-    cell = cell.to(torch.float32)
+    # cell = cell / 255.0 ADD BACK IN IF BREAKS
+    # cell = cell.to(torch.float32)
     # predict digit
     cell = model(cell)
     cell = cell.argmax(dim=1, keepdim=True)
