@@ -125,21 +125,26 @@ def extract_digit(cell):
 
 def predict_all(img):
     warped = find_puzzle(img)
+    # create empty board
     board = np.zeros((9,9), dtype = 'int')
-    stepX = warped.shape[1] // 9
-    stepY = warped.shape[0] // 9
+    # calculate x and y step sizes
+    x_step = warped.shape[1] // 9
+    y_step = warped.shape[0] // 9
 
     cellLocs = []
 
     for y in range(0,9):
         row = []
         for x in range(0,9):
-            startX = x * stepX
-            startY = y * stepY
-            endX = (x+1) * stepX
-            endY = (y+1) * stepY
-            row.append((startX, startY, endX, endY))
-            cell = warped[startY:endY, startX:endX]
+            # calculate and store cell coordinates
+            x_start = x * x_step
+            y_start = y * y_step
+            x_end = (x+1) * x_step
+            y_end = (y+1) * y_step
+            row.append((x_start, y_start, x_end, y_end))
+
+            # extract and predict digit and update board
+            cell = warped[y_start:y_end, x_start:x_end]
             digit = extract_digit(cell)
             if digit is not None:
                 digit = predict(digit)
