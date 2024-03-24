@@ -21,7 +21,6 @@ class GUI():
         self.entries = [[tk.Entry(self.grid_frame, width=3, justify="center") for i in range(9)] for j in range(9)]
         for i in range(9):
             for j in range(9):
-
                 # Add padding to the entry boxes to make them look like a sudoku grid
                 padx = (0, 0)
                 pady = (0, 0)
