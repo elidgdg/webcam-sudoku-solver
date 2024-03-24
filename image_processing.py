@@ -134,14 +134,14 @@ def predict_all(img):
     # cellLocs = []
 
     for y in range(0,9):
-        row = []
+        # row = []
         for x in range(0,9):
-            # calculate and store cell coordinates
+            # calculate cell coordinates
             x_start = x * x_step
             y_start = y * y_step
             x_end = (x+1) * x_step
             y_end = (y+1) * y_step
-            row.append((x_start, y_start, x_end, y_end))
+            # row.append((x_start, y_start, x_end, y_end))
 
             # extract and predict digit and update board
             cell = warped[y_start:y_end, x_start:x_end]
