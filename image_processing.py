@@ -131,7 +131,7 @@ def predict_all(img):
     x_step = warped.shape[1] // 9
     y_step = warped.shape[0] // 9
 
-    cellLocs = []
+    # cellLocs = []
 
     for y in range(0,9):
         row = []
@@ -149,5 +149,5 @@ def predict_all(img):
             if digit is not None:
                 digit = predict(digit)
                 board[y,x] = digit
-        cellLocs.append(row)
+        # cellLocs.append(row)
     return board
