@@ -10,6 +10,8 @@ class GUI():
     def __init__(self, root):
         self.root = root
 
+        root.option_add("*Font", "TkDefaultFont 18")
+
         # Create frame for the sudoku grid
         self.grid_frame = tk.Frame(root)
         self.grid_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -38,7 +40,7 @@ class GUI():
 
 
         # Create message label
-        self.message_lbl = tk.Label(self.button_frame, text="Enter known digits, then click 'Start Solving'", wraplength=90, justify="center")
+        self.message_lbl = tk.Label(self.button_frame, text="Enter known digits, then click 'Start Solving'", wraplength=150, justify="center", font=("TkDefaultFont", 15))
         self.message_lbl.grid(row=0, column=0, columnspan=9, padx=10, pady=10) 
 
         # Create initial buttons
@@ -147,7 +149,7 @@ class GUI():
             self.update_entries(current_board)
         # if not possible, solve initial board
         else:
-            self.show_error_message("Current board has no solution. Showing solution to initial board.")
+            self.show_error_message("Invalid entries. Solving initial board.")
             board = copy.deepcopy(self.initial_entries)
             sudoku_algorithms.solve(board)
             self.update_entries(board)
