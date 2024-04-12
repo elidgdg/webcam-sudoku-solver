@@ -68,13 +68,13 @@ def find_puzzle(img):
         # for testing purposes
         output = img.copy()
         cv2.drawContours(output, [puzzle_cnt], -1, (0,255,0), 2)
-        cv2.imshow('Puzzle Outline', output)
+        # cv2.imshow('Puzzle Outline', output)
         
         # transform image to get top-down view
         # puzzle_warped = four_point_transform(img, puzzle_cnt.reshape(4,2))
         puzzle_warped_gray = four_point_transform(img_gray, puzzle_cnt.reshape(4,2))
 
-        cv2.imshow('Puzzle Transform', puzzle_warped_gray)
+        # cv2.imshow('Puzzle Transform', puzzle_warped_gray)
 
     return puzzle_warped_gray
 
