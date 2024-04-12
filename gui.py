@@ -97,7 +97,7 @@ class GUI():
                     board[start_row + i][start_col + j] = temp
         
     def callback(self, input):
-        if len(input) <= 1 and input.isdigit() or input == "":
+        if len(input) <= 1 and input.isdigit() and input != "0" or input == "":
             # highlight conflicts
             self.root.after(10, lambda: self.highlight_conflicts(int(self.root.focus_get().grid_info()["row"]), int(self.root.focus_get().grid_info()["column"])))
             return True
