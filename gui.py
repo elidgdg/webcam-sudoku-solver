@@ -191,7 +191,7 @@ class GUI():
                 self.entries[i][j].config(state="normal")
                 self.entries[i][j].delete(0, tk.END)
                 
-# display camera feed next to sudoku grid
+    # display camera feed next to sudoku grid
     def open_camera(self):
         # change message label
         self.message_lbl.config(text="Take a picture of the sudoku board")
