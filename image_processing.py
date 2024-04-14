@@ -41,10 +41,8 @@ model.eval()
 def find_puzzle(img):
     # image preprocessing
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # blurred = cv2.GaussianBlur(img_gray, (7,7), 3)
     thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                     cv2.THRESH_BINARY_INV, 11, 2)
-    # thresh = cv2.bitwise_not(thresh)
     
     # find contours in thresholded image
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
@@ -66,14 +64,14 @@ def find_puzzle(img):
     if puzzle_cnt is not None:
     
         # for testing purposes
-        output = img.copy()
-        cv2.drawContours(output, [puzzle_cnt], -1, (0,255,0), 2)
+        # output = img.copy()
+        # cv2.drawContours(output, [puzzle_cnt], -1, (0,255,0), 2)
         # cv2.imshow('Puzzle Outline', output)
         
         # transform image to get top-down view
-        # puzzle_warped = four_point_transform(img, puzzle_cnt.reshape(4,2))
         puzzle_warped_gray = four_point_transform(img_gray, puzzle_cnt.reshape(4,2))
 
+        # for testing purposes
         # cv2.imshow('Puzzle Transform', puzzle_warped_gray)
 
     return puzzle_warped_gray
@@ -84,8 +82,6 @@ def predict(cell):
     cell = cell.reshape(1, 1, 28, 28)
     cell = torch.from_numpy(cell)
     cell = cell.to(torch.float32)
-    # cell = cell / 255.0 ADD BACK IN IF BREAKS
-    # cell = cell.to(torch.float32)
     # predict digit
     prediction = model(cell)
     prediction = prediction.argmax(dim=1, keepdim=True)
@@ -106,7 +102,6 @@ def extract_digit(cell):
     
     # find largest contour
     largest_cnt = max(cnts, key = cv2.contourArea)
-    # mask = np.zeros(thresh.shape, dtype = 'uint8')
     largest_cnt_img = np.zeros(thresh.shape, dtype = 'uint8')
     cv2.drawContours(largest_cnt_img, [largest_cnt], -1, 255, -1)
 
@@ -116,9 +111,6 @@ def extract_digit(cell):
     if percentFilled < 0.03:
         return None
     
-    # apply mask to thresholded image
-    # digit = cv2.bitwise_and(thresh, thresh, mask = mask)
-
     return largest_cnt_img
 
 
@@ -131,17 +123,14 @@ def predict_all(img):
     x_step = warped.shape[1] // 9
     y_step = warped.shape[0] // 9
 
-    # cellLocs = []
 
     for y in range(0,9):
-        # row = []
         for x in range(0,9):
             # calculate cell coordinates
             x_start = x * x_step
             y_start = y * y_step
             x_end = (x+1) * x_step
             y_end = (y+1) * y_step
-            # row.append((x_start, y_start, x_end, y_end))
 
             # extract and predict digit and update board
             cell = warped[y_start:y_end, x_start:x_end]
@@ -149,5 +138,4 @@ def predict_all(img):
             if digit is not None:
                 digit = predict(digit)
                 board[y,x] = digit
-        # cellLocs.append(row)
     return board
